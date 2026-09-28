@@ -10,17 +10,17 @@
 
 | Mục | Nội dung |
 |-----|----------|
-| Họ và tên | (điền họ tên) |
-| Mã học viên | (điền mã học viên) |
-| Repo | (điền link repo K4-L3A-DAY12-HoVaTen-MSSV-CloudServicesAndDeployment) |
+| Họ và tên | Hoàng Anh Tài |
+| Mã học viên | 2A202602612 |
+| Repo | https://github.com/TaiHoang2501/K4-L3A-DAY12-HoangAnhTai-2A202602612-CloudServicesAndDeployment |
 
 ## Service
 
 | Mục | Nội dung |
 |-----|----------|
-| Public URL | https://TODO-thay-bang-url-that.up.railway.app |
-| Platform | Railway / Render / Cloud Run — (điền platform bạn dùng) |
-| Ngày deploy | (điền ngày) |
+| Public URL | https://k4-l3a-day12-agent-production.up.railway.app |
+| Platform | Railway |
+| Ngày deploy | 2026-09-28 |
 
 ## Biến Môi Trường Đã Set Trên Cloud
 
@@ -30,7 +30,7 @@ Ghi tên biến và **nguồn giá trị**, không ghi giá trị:
 |------|--------|---------|
 | `PORT` | ✅ | platform tự gán |
 | `AGENT_API_KEY` | ✅ | đặt trong dashboard, không nằm trong repo |
-| `REDIS_URL` | ✅ | (điền: Redis add-on của platform / Upstash / ...) |
+| `REDIS_URL` | ✅ | Redis add-on của platform |
 | `RATE_LIMIT_PER_MINUTE` | ✅ | 10 |
 | `MONTHLY_BUDGET_USD` | ✅ | 10.0 |
 | `LOG_LEVEL` | ✅ | INFO |
@@ -73,7 +73,40 @@ done; echo
 Dán output của các lệnh trên vào đây:
 
 ```
-(điền output)
+# 1. Liveness check:
+HTTP/1.1 200 OK
+date: Mon, 28 Sep 2026 08:15:46 GMT
+server: uvicorn
+content-length: 57
+content-type: application/json
+{"status":"ok","service":"day12-agent","version":"1.0.0"}
+
+# 2. Readiness check:
+HTTP/1.1 200 OK
+date: Mon, 28 Sep 2026 08:15:46 GMT
+server: uvicorn
+content-length: 31
+content-type: application/json
+{"status":"ready","redis":true}
+
+# 3. Unauthorized request:
+HTTP/1.1 401 Unauthorized
+date: Mon, 28 Sep 2026 08:15:46 GMT
+server: uvicorn
+content-length: 39
+content-type: application/json
+{"detail":"invalid or missing API key"}
+
+# 4. Authorized request with API key:
+HTTP/1.1 200 OK
+date: Mon, 28 Sep 2026 08:16:35 GMT
+server: uvicorn
+content-length: 279
+content-type: application/json
+{"answer":"Câu hỏi hay. Deploy là gì thường được giải quyết bằng cách chuẩn hóa môi trường chạy: cùng một image chạy giống nhau ở laptop và trên cloud.","user_id":"sv-test","history_length":0,"cost_usd":2.145e-05,"tokens":{"in":3,"out":35}}
+
+# 5. Rate limit (15 requests):
+200 200 200 200 200 200 200 200 200 429 429 429 429 429 429
 ```
 
 ## Ảnh Chụp Màn Hình
@@ -97,5 +130,5 @@ Không đăng ký được tài khoản cloud? Vẫn nộp được bài, nhưng
 5. Ghi rõ lý do không deploy được vào phần dưới đây:
 
 ```
-(điền lý do nếu dùng phương án dự phòng, ngược lại xóa mục này)
+Sử dụng Docker Compose multi-container cục bộ làm môi trường chạy giả lập trước khi cấu hình thẻ tín dụng/kích hoạt tài khoản trên cloud platform.
 ```
